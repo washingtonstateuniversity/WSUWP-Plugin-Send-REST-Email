@@ -46,7 +46,7 @@ if ( ! function_exists( 'wp_mail' ) ) :
 		}
 
 		// Headers
-		$cc = $bcc = $reply_to = array();
+		$cc = $bcc = $reply_to = array(); // @codingStandardsIgnoreLine
 
 		if ( empty( $headers ) ) {
 			$headers = array();
@@ -61,12 +61,12 @@ if ( ! function_exists( 'wp_mail' ) ) :
 			$headers = array();
 
 			// If it's actually got contents
-			if ( !empty( $tempheaders ) ) {
+			if ( ! empty( $tempheaders ) ) {
 				// Iterate through the raw headers
 				foreach ( (array) $tempheaders as $header ) {
-					if ( strpos($header, ':') === false ) {
+					if ( strpos( $header, ':' ) === false ) {
 						if ( false !== stripos( $header, 'boundary=' ) ) {
-							$parts = preg_split('/boundary=/i', trim( $header ) );
+							$parts = preg_split( '/boundary=/i', trim( $header ) );
 							$boundary = trim( str_replace( array( "'", '"' ), '', $parts[1] ) );
 						}
 						continue;
@@ -75,14 +75,14 @@ if ( ! function_exists( 'wp_mail' ) ) :
 					list( $name, $content ) = explode( ':', trim( $header ), 2 );
 
 					// Cleanup crew
-					$name    = trim( $name    );
+					$name = trim( $name );
 					$content = trim( $content );
 
 					switch ( strtolower( $name ) ) {
 						// Mainly for legacy -- process a From: header if it's there
 						case 'from':
 							$bracket_pos = strpos( $content, '<' );
-							if ( $bracket_pos !== false ) {
+							if ( false !== $bracket_pos ) {
 								// Text before the bracketed email is the "From" name.
 								if ( $bracket_pos > 0 ) {
 									$from_name = substr( $content, 0, $bracket_pos - 1 );
@@ -109,9 +109,8 @@ if ( ! function_exists( 'wp_mail' ) ) :
 									$boundary = trim( str_replace( array( 'BOUNDARY=', 'boundary=', '"' ), '', $charset_content ) );
 									$charset = '';
 								}
-
-								// Avoid setting an empty $content_type.
 							} elseif ( '' !== trim( $content ) ) {
+								// Avoid setting an empty $content_type.
 								$content_type = trim( $content );
 							}
 							break;
@@ -126,22 +125,23 @@ if ( ! function_exists( 'wp_mail' ) ) :
 							break;
 						default:
 							// Add it to our grand headers array
-							$headers[trim( $name )] = trim( $content );
+							$headers[ trim( $name ) ] = trim( $content );
 							break;
-					}
-				}
-			}
-		}
+					} // End switch().
+				} // End foreach().
+			} // End if().
+		} // End if().
 
 		// From email and name
 		// If we don't have a name from the input headers
-		if ( !isset( $from_name ) )
+		if ( ! isset( $from_name ) ) {
 			$from_name = 'WordPress';
+		}
 
-		if ( !isset( $from_email ) ) {
+		if ( ! isset( $from_email ) ) {
 			// Get the site domain and get rid of www.
 			$sitename = strtolower( $_SERVER['SERVER_NAME'] );
-			if ( substr( $sitename, 0, 4 ) == 'www.' ) {
+			if ( substr( $sitename, 0, 4 ) === 'www.' ) {
 				$sitename = substr( $sitename, 4 );
 			}
 
