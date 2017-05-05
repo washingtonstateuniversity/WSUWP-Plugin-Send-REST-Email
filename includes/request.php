@@ -22,7 +22,9 @@ function mail( $data ) {
 	}
 
 	$args = array(
-		'headers'   => array('Content-Type' => 'application/json; charset=utf-8'),
+		'headers' => array(
+			'Content-Type' => 'application/json; charset=utf-8',
+		),
 		'body' => $data,
 	);
 	$response = wp_remote_post( $rest_url, $args );
