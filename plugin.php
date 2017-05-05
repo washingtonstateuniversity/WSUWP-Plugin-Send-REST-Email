@@ -15,6 +15,8 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
+include_once __DIR__ . '/includes/wp-mail.php';
+
 add_action( 'plugins_loaded', 'WSU\SendRestEmail\bootstrap' );
 /**
  * Loads the rest of the Send REST Email.
@@ -22,5 +24,5 @@ add_action( 'plugins_loaded', 'WSU\SendRestEmail\bootstrap' );
  * @since 0.0.1
  */
 function bootstrap() {
-	include_once __DIR__ . '/includes/mail.php';
+	include_once __DIR__ . '/includes/request.php';
 }
