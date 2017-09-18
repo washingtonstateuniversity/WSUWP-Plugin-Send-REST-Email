@@ -15,7 +15,9 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
+// Pluggable functions.
 include_once __DIR__ . '/includes/wp-mail.php';
+include_once __DIR__ . '/includes/wp-new-user-notification.php';
 
 add_action( 'plugins_loaded', 'WSU\SendRestEmail\bootstrap' );
 /**
@@ -24,5 +26,6 @@ add_action( 'plugins_loaded', 'WSU\SendRestEmail\bootstrap' );
  * @since 0.0.1
  */
 function bootstrap() {
+	include_once __DIR__ . '/includes/format.php';
 	include_once __DIR__ . '/includes/request.php';
 }
