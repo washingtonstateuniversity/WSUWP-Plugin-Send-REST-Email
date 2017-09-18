@@ -2,23 +2,23 @@
 
 if ( ! function_exists( 'wp_new_user_notification' ) ) :
 	/**
- * Email login credentials to a newly-registered user.
- *
- * A new user registration notification is also sent to admin email.
- *
- * @since 2.0.0
- * @since 4.3.0 The `$plaintext_pass` parameter was changed to `$notify`.
- * @since 4.3.1 The `$plaintext_pass` parameter was deprecated. `$notify` added as a third parameter.
- * @since 4.6.0 The `$notify` parameter accepts 'user' for sending notification only to the user created.
- *
- * @global wpdb         $wpdb      WordPress database object for queries.
- * @global PasswordHash $wp_hasher Portable PHP password hashing framework instance.
- *
- * @param int    $user_id    User ID.
- * @param null   $deprecated Not used (argument deprecated).
- * @param string $notify     Optional. Type of notification that should happen. Accepts 'admin' or an empty
- *                           string (admin only), 'user', or 'both' (admin and user). Default empty.
- */
+	 * Email login credentials to a newly-registered user.
+	 *
+	 * A new user registration notification is also sent to admin email.
+	 *
+	 * @since 2.0.0
+	 * @since 4.3.0 The `$plaintext_pass` parameter was changed to `$notify`.
+	 * @since 4.3.1 The `$plaintext_pass` parameter was deprecated. `$notify` added as a third parameter.
+	 * @since 4.6.0 The `$notify` parameter accepts 'user' for sending notification only to the user created.
+	 *
+	 * @global wpdb         $wpdb      WordPress database object for queries.
+	 * @global PasswordHash $wp_hasher Portable PHP password hashing framework instance.
+	 *
+	 * @param int    $user_id    User ID.
+	 * @param null   $deprecated Not used (argument deprecated).
+	 * @param string $notify     Optional. Type of notification that should happen. Accepts 'admin' or an empty
+	 *                           string (admin only), 'user', or 'both' (admin and user). Default empty.
+	 */
 	function wp_new_user_notification( $user_id, $deprecated = null, $notify = '' ) {
 		if ( null !== $deprecated ) {
 			_deprecated_argument( __FUNCTION__, '4.3.1' );
@@ -52,9 +52,7 @@ if ( ! function_exists( 'wp_new_user_notification' ) ) :
 		// Generate something random for a password reset key.
 		$key = wp_generate_password( 20, false );
 
-		/**
-* This action is documented in wp-login.php
-*/
+		// This action is documented in wp-login.php.
 		do_action( 'retrieve_password_key', $user->user_login, $key );
 
 		// Now insert the key, hashed, into the DB.
@@ -69,15 +67,15 @@ if ( ! function_exists( 'wp_new_user_notification' ) ) :
 			'user_login' => $user->user_login,
 		) );
 
-			$switched_locale = switch_to_locale( get_user_locale( $user ) );
+		$switched_locale = switch_to_locale( get_user_locale( $user ) );
 
-			$message = sprintf( __( 'Username: %s' ), $user->user_login ) . "\r\n\r\n";
-			$message .= __( 'To set your password, visit the following address:' ) . "\r\n\r\n";
-			$message .= ' ' . network_site_url( "wp-login.php?action=rp&key=$key&login=" . rawurlencode( $user->user_login ), 'login' ) . " \r\n\r\n";
+		$message = sprintf( __( 'Username: %s' ), $user->user_login ) . "\r\n\r\n";
+		$message .= __( 'To set your password, visit the following address:' ) . "\r\n\r\n";
+		$message .= ' ' . network_site_url( "wp-login.php?action=rp&key=$key&login=" . rawurlencode( $user->user_login ), 'login' ) . " \r\n\r\n";
 
-			$message .= wp_login_url() . "\r\n";
+		$message .= wp_login_url() . "\r\n";
 
-			wp_mail( $user->user_email, sprintf( __( '[%s] Your username and password info' ), $blogname ), $message );
+		wp_mail( $user->user_email, sprintf( __( '[%s] Your username and password info' ), $blogname ), $message );
 
 		if ( $switched_locale ) {
 			restore_previous_locale();
