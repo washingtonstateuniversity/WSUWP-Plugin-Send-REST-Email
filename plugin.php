@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: WSUWP Send REST Email
-Version: 0.0.2
+Version: 0.0.3
 Description: Send email through REST Email Proxy
 Author: washingtonstateuniversity, jeremyfelt
 Author URI: https://web.wsu.edu/
